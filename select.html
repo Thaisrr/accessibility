@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Custom Select</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+
+    <style>
+
+        #custom-select {
+            width: 200px;
+        }
+
+        #btn-select {
+            width: 100%;
+            padding: 15px 10px;
+            border-radius: 5px;
+            border: 1px solid black;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        #btn-select:active, #btn-select:focus {
+            outline: 3px rgba(135, 206, 235, 0.65) solid;
+        }
+
+
+        #select-dialog {
+            width: min(100%, fit-content);
+            background: white;
+            border: solid black 1px;
+            border-radius: 5px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .check {
+            border: none;
+            width: 0;
+            height: 0;
+        }
+
+        .check + label {
+            width: 100%;
+            padding: 15px 10px;
+        }
+
+        .check:checked + label, .check + label:hover {
+            background: yellow;
+        }
+
+    </style>
+</head>
+<body>
+
+<div id="custom-select">
+    <button id="btn-select" aria-label="Selectionner une résidence">
+        <span id="text"></span>
+        <span class="material-icons">arrow_down</span>
+    </button>
+    <div id="select-dialog" role="dialog" aria-live="assertive" class="select-options hidden">
+        <!--
+
+        Pour la validation du formulaire ( en JS ), 3 possibilités :
+        -> attribut onsubmit="", qui prend en valeur une fonction créée dans le JS
+                <form onsubmit="mafonction(param) ....>
+
+        -> Ajouter un événement 'submit', avec addEventListener directement dans le script ( cf : le script)
+
+        -> Modifier l'attribut 'submit' dans le JS :
+            const form = document.querySelector('#id')
+            form.onsubmit = fonction()
+
+
+            Vrai pour tous type d'événement : click, submit, mouseover, change, input....
+        -->
+        <form id="form-select">
+            <ul>
+                <li>
+                    <input class="check" id="r1" type="checkbox" name="house" value="lilas">
+                    <label for="r1">Résidence des Lilas</label>
+                </li>
+                <li>
+                    <input class="check" id="r2" type="checkbox" name="house" value="tulips">
+                    <label for="r2">Résidence des Tulipes</label>
+                </li>
+            </ul>
+            <button type="submit">Enregistrer mes résidences</button>
+        </form>
+
+    </div>
+</div>
+
+<script>
+
+
+
+        const select_btn = document.querySelector('#btn-select');
+        select_btn.addEventListener('click', () => {
+            const dialog = document.querySelector('#select-dialog');
+            dialog.classList.toggle('hidden');
+        });
+
+        const form = document.querySelector('#form-select');
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const checkboxes = document.querySelectorAll('.check');
+            let values = [];
+            checkboxes.forEach(el => {
+                if (el.checked) values.push(el.value);
+            });
+            const dialog = document.querySelector('#select-dialog');
+            dialog.classList.toggle('hidden');
+            // Todo : renvoyer les valeurs au PHP :
+            // form.submit()
+        })
+
+
+
+</script>
+
+</body>
+</html>
